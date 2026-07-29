@@ -1,0 +1,17 @@
+.env
+.agent_data/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+dist/
+build/
+*.egg-info/
+outputs/
+work/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
