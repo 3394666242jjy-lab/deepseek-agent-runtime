@@ -24,7 +24,7 @@
 | 最大轮次 | `AGENT_MAX_STEPS`，触顶后执行一次无工具的最终归纳 |
 | 异常处理 | API 重试、HTTP 错误、Schema 校验、工具错误隔离、路径防穿越 |
 | trace | 每个 session 一个 append-only JSONL |
-| 测试 | 20 个离线单元/集成测试，不消耗 API |
+| 测试 | 22 个离线单元/集成测试，不消耗 API |
 
 DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
 `https://api.deepseek.com`，工具调用使用 JSON Schema。默认模型使用
@@ -71,14 +71,18 @@ DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
    python main.py
    ```
 
-   启动后终端会持续显示 `you>`。输入问题并按回车，Agent 回答后会再次等待输入；
-   使用 `/trace` 查看日志、`/help` 查看命令、`/exit` 保存并退出。
+   启动后会自动创建一个空白 session，并持续显示 `you>`。输入问题并按回车，
+   Agent 回答后会再次等待输入。使用 `/new` 创建新会话、`/trace` 查看日志、
+   `/help` 查看命令、`/exit` 保存并退出。
 
 5. 使用独立 session 或显示工具调用：
 
    ```powershell
    python main.py --session window-1 --show-trace
    ```
+
+   只有显式指定相同的 `--session` 才会恢复旧对话；直接运行 `python main.py`
+   每次都是干净的新会话，避免旧待办和历史影响当前问题。
 
 6. 单次提问：
 

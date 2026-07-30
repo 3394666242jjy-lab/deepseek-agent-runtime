@@ -16,7 +16,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="启动 DeepSeek Agent 交互式终端"
     )
-    parser.add_argument("--session", default="default", help="会话名称")
+    parser.add_argument(
+        "--session",
+        default=None,
+        help="要恢复的会话名称；不提供时创建新会话",
+    )
     parser.add_argument("--env", default=".env", help=".env 文件路径")
     parser.add_argument(
         "--show-trace",
@@ -28,13 +32,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
-    cli_args = [
-        "--env",
-        args.env,
-        "chat",
-        "--session",
-        args.session,
-    ]
+    cli_args = ["--env", args.env, "chat"]
+    if args.session:
+        cli_args.extend(["--session", args.session])
     if args.show_trace:
         cli_args.append("--show-trace")
     return cli_main(cli_args)
