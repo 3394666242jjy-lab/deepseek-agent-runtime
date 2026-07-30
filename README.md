@@ -24,7 +24,7 @@
 | 最大轮次 | `AGENT_MAX_STEPS`，触顶后执行一次无工具的最终归纳 |
 | 异常处理 | API 重试、HTTP 错误、Schema 校验、工具错误隔离、路径防穿越 |
 | trace | 每个 session 一个 append-only JSONL |
-| 测试 | 18 个离线单元/集成测试，不消耗 API |
+| 测试 | 20 个离线单元/集成测试，不消耗 API |
 
 DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
 `https://api.deepseek.com`，工具调用使用 JSON Schema。默认模型使用
@@ -62,6 +62,8 @@ DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
    ```
 
    `.env` 已被 `.gitignore` 排除，不会提交到 GitHub。
+   项目会优先读取该文件，避免终端中残留的旧 Key 覆盖新配置。Key 行前不能带 `#`，
+   因为 `#` 表示注释。
 
 4. 启动持续对话：
 

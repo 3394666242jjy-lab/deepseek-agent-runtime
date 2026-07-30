@@ -5,8 +5,13 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-def load_dotenv(path: Path | str = ".env") -> None:
-    """Load a small, dependency-free subset of dotenv syntax."""
+def load_dotenv(path: Path | str = ".env", *, override: bool = True) -> None:
+    """Load a small, dependency-free subset of dotenv syntax.
+
+    An explicitly selected project ``.env`` is authoritative by default. This
+    prevents a stale parent-shell value from silently overriding a key that the
+    user just updated in the project.
+    """
     env_path = Path(path)
     if not env_path.exists():
         return
@@ -19,7 +24,8 @@ def load_dotenv(path: Path | str = ".env") -> None:
         value = value.strip()
         if value and value[0] in {"'", '"'} and value[-1:] == value[0]:
             value = value[1:-1]
-        os.environ.setdefault(key, value)
+        if override or key not in os.environ:
+            os.environ[key] = value
 
 
 def _as_bool(value: str) -> bool:
@@ -40,7 +46,7 @@ class Settings:
 
     @classmethod
     def from_env(cls, dotenv_path: Path | str = ".env") -> "Settings":
-        load_dotenv(dotenv_path)
+        load_dotenv(dotenv_path, override=True)
         return cls(
             api_key=os.getenv("DEEPSEEK_API_KEY", "").strip(),
             base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com").rstrip("/"),
