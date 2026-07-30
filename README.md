@@ -39,17 +39,32 @@ DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
    DEEPSEEK_API_KEY=你的_key
    ```
 
-2. 单次提问：
+2. 启动持续对话：
+
+   ```powershell
+   python main.py
+   ```
+
+   启动后终端会持续显示 `you>`。输入问题并按回车，Agent 回答后会再次等待输入；
+   使用 `/trace` 查看日志、`/help` 查看命令、`/exit` 保存并退出。
+
+3. 使用独立 session 或显示工具调用：
+
+   ```powershell
+   python main.py --session window-1 --show-trace
+   ```
+
+4. 单次提问：
 
    ```powershell
    python -m mini_agent ask "计算 (123+456)*7，并把结果加入待办" --session window-1 --show-trace
    ```
 
-3. 持续对话：
+原有模块命令同样可以启动持续对话：
 
-   ```powershell
-   python -m mini_agent chat --session window-1 --show-trace
-   ```
+```powershell
+python -m mini_agent chat --session window-1 --show-trace
+```
 
 不安装也能使用 `python -m mini_agent`。如需安装命令：
 
@@ -185,6 +200,7 @@ mini_agent/
   tracing.py          JSONL trace
   tools/              工具抽象、注册表和 5 个工具
 tests/                离线测试
+main.py               最简单的交互式启动入口
 docs/
   README.md
   architecture-interview.md

@@ -66,7 +66,8 @@ def main(argv: list[str] | None = None) -> int:
             _print_result(runtime.run(args.session, args.message), args.show_trace)
             return 0
 
-        print(f"session={args.session}。输入 /exit 退出，/trace 查看最近日志。")
+        print(f"DeepSeek Agent 已启动，session={args.session}")
+        print("输入问题后按回车；/trace 查看日志，/help 查看帮助，/exit 退出。")
         while True:
             try:
                 text = input("you> ").strip()
@@ -76,7 +77,16 @@ def main(argv: list[str] | None = None) -> int:
             if not text:
                 continue
             if text in {"/exit", "/quit"}:
+                print("会话已保存，再见。")
                 break
+            if text == "/help":
+                print(
+                    "可用命令：\n"
+                    "  /trace  查看当前 session 最近 20 条执行日志\n"
+                    "  /help   查看帮助\n"
+                    "  /exit   保存并退出"
+                )
+                continue
             if text == "/trace":
                 print(
                     json.dumps(
@@ -86,7 +96,12 @@ def main(argv: list[str] | None = None) -> int:
                     )
                 )
                 continue
-            result = runtime.run(args.session, text)
+            try:
+                result = runtime.run(args.session, text)
+            except (LLMError, ValueError) as exc:
+                print(f"agent> 本轮执行失败：{exc}")
+                print("你可以继续输入，或使用 /exit 退出。")
+                continue
             print("agent> ", end="")
             _print_result(result, args.show_trace)
         return 0

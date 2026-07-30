@@ -29,7 +29,7 @@ python -m mini_agent ask "计算 (123+456)*7，把结果加入待办，再列出
 ## 镜头 2：带工具追问
 
 ```powershell
-python -m mini_agent chat --session demo-main --show-trace
+python main.py --session demo-main --show-trace
 ```
 
 输入：
