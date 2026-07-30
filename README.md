@@ -1,10 +1,13 @@
-# Minimal DeepSeek Agent Runtime
+# DeepSeek Agent Runtime
 
+[![Tests](https://github.com/3394666242jjy-lab/deepseek-agent-runtime/actions/workflows/tests.yml/badge.svg)](https://github.com/3394666242jjy-lab/deepseek-agent-runtime/actions/workflows/tests.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-一个不依赖 LangGraph、OpenHands、OpenClaw 等 Agent 框架的最小可用 Agent。
+一个从零实现、不依赖 LangGraph、OpenHands、OpenClaw 等 Agent 框架的最小可用 Agent Runtime。
 核心循环、工具注册、LLM 输出解析、session、context 压缩、trace 与异常边界均自行实现。
+
+仓库地址：[3394666242jjy-lab/deepseek-agent-runtime](https://github.com/3394666242jjy-lab/deepseek-agent-runtime)
 
 ## 功能对照
 
@@ -21,7 +24,7 @@
 | 最大轮次 | `AGENT_MAX_STEPS`，触顶后执行一次无工具的最终归纳 |
 | 异常处理 | API 重试、HTTP 错误、Schema 校验、工具错误隔离、路径防穿越 |
 | trace | 每个 session 一个 append-only JSONL |
-| 测试 | 17 个离线单元/集成测试，不消耗 API |
+| 测试 | 18 个离线单元/集成测试，不消耗 API |
 
 DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
 `https://api.deepseek.com`，工具调用使用 JSON Schema。默认模型使用
@@ -33,13 +36,34 @@ DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
 
 要求 Python 3.10+，运行时无第三方依赖。
 
-1. 打开项目根目录的 `.env`，填写：
+1. 克隆仓库并进入目录：
+
+   ```powershell
+   git clone https://github.com/3394666242jjy-lab/deepseek-agent-runtime.git
+   cd deepseek-agent-runtime
+   ```
+
+2. 从示例配置创建本地 `.env`：
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+   macOS/Linux 使用：
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. 打开 `.env`，填写 DeepSeek API Key：
 
    ```dotenv
    DEEPSEEK_API_KEY=你的_key
    ```
 
-2. 启动持续对话：
+   `.env` 已被 `.gitignore` 排除，不会提交到 GitHub。
+
+4. 启动持续对话：
 
    ```powershell
    python main.py
@@ -48,13 +72,13 @@ DeepSeek 当前官方文档给出的 OpenAI 格式 Base URL 是
    启动后终端会持续显示 `you>`。输入问题并按回车，Agent 回答后会再次等待输入；
    使用 `/trace` 查看日志、`/help` 查看命令、`/exit` 保存并退出。
 
-3. 使用独立 session 或显示工具调用：
+5. 使用独立 session 或显示工具调用：
 
    ```powershell
    python main.py --session window-1 --show-trace
    ```
 
-4. 单次提问：
+6. 单次提问：
 
    ```powershell
    python -m mini_agent ask "计算 (123+456)*7，并把结果加入待办" --session window-1 --show-trace

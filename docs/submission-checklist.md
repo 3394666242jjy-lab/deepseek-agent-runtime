@@ -12,4 +12,4 @@
 - [x] 终端录屏脚本
 - [ ] 在 `.env` 填写个人 DeepSeek API Key
 - [ ] 按 `docs/demo-recording-guide.md` 完成真实 API 录屏
-- [ ] 将代码推送到个人 GitHub/GitLab 并填写最终代码链接
+- [x] 代码仓库：[3394666242jjy-lab/deepseek-agent-runtime](https://github.com/3394666242jjy-lab/deepseek-agent-runtime)
